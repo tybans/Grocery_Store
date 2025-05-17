@@ -1,31 +1,39 @@
-import React, { useEffect, useState } from 'react';
-import productsData from '../data/products';
+import React, { useState, useEffect } from "react";
+import productsData from "../data/products"; // Import all product details
 
-function Filter({ selectedCategory, onSelectCategory }) {
+// Filter component lets the user choose a category to filter products
+function Filter(props) {
+  const { selectedCategory, onSelectCategory } = props;
+
+  // This state holds the list of all categories
   const [categories, setCategories] = useState([]);
 
+  // This runs only once when the component is loaded
   useEffect(() => {
-    // Extract unique categories dynamically
-    const uniqueCategories = [...new Set(productsData.map(p => p.category))];
-    setCategories(uniqueCategories);
+    // Get all categories from the products and remove duplicates
+    const allCategories = productsData.map((product) => product.category);
+    const uniqueCategories = [...new Set(allCategories)]; // Make them unique
+    setCategories(uniqueCategories); // Save in state
   }, []);
 
   return (
     <div className="filter">
+      {/* Button for showing all products */}
       <button
-        className={!selectedCategory ? 'active' : ''}
-        onClick={() => onSelectCategory(null)}
+        className={!selectedCategory ? "active" : ""}
+        onClick={() => onSelectCategory(null)} // Clear selected category
       >
         All
       </button>
 
-      {categories.map((cat) => (
+      {/* Buttons for each unique category */}
+      {categories.map((category) => (
         <button
-          key={cat}
-          className={selectedCategory === cat ? 'active' : ''}
-          onClick={() => onSelectCategory(cat)}
+          key={category}
+          className={selectedCategory === category ? "active" : ""}
+          onClick={() => onSelectCategory(category)} // Set selected category
         >
-          {cat}
+          {category}
         </button>
       ))}
     </div>

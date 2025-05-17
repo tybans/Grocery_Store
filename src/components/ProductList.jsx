@@ -1,24 +1,33 @@
-// This component displays a list of products and allows filtering by category.
-
 import React, { useState, useEffect } from "react";
 import ProductCard from "./ProductCard";
-import productsData from "../data/products";
+import productsData from "../data/products"; // This file contains all the product information
 
-function ProductList({ selectedCategory, onAddToCart }) {
+// ProductList component shows all products and filters them by category if selected
+function ProductList(props) {
+  const { selectedCategory, onAddToCart } = props;
+
+  // This state stores the list of products to show
   const [products, setProducts] = useState([]);
 
+  // Load product data when the component first loads
   useEffect(() => {
-    setProducts(productsData);
+    setProducts(productsData); // Set the product list from the data file
   }, []);
 
+  // Filter products by category if a category is selected
   const filteredProducts = selectedCategory
-    ? products.filter((p) => p.category === selectedCategory)
+    ? products.filter((item) => item.category === selectedCategory)
     : products;
 
   return (
     <div className="product-list">
+      {/* Loop through the filtered products and show each one */}
       {filteredProducts.map((product) => (
-        <ProductCard key={product.id} product={product} onAdd={onAddToCart} />
+        <ProductCard
+          key={product.id}
+          product={product}
+          onAdd={onAddToCart} // Pass the function to add to cart
+        />
       ))}
     </div>
   );
